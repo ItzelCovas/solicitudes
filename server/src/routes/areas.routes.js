@@ -1,4 +1,6 @@
 const router = require('express').Router()
+const { isAuthenticated } = require('../middleware/auth')
+const { checkRole } = require('../middleware/authorize')
 const { getAll, getById, create, update, remove } = require('../controllers/areas.controller')
 const { isAuthenticated } = require('../middleware/auth')
 const { checkRole } = require('../middleware/authorize')
@@ -8,7 +10,6 @@ const { createAreaSchema, updateAreaSchema } = require('../schemas/areas.schema'
 
 router.use(isAuthenticated) // Todas las rutas requieren autenticación
 
-// Rutas de lectura (disponibles para todos los usuarios autenticados)
 router.get('/', getAll)
 router.get('/:id', getById)
 

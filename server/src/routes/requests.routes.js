@@ -1,4 +1,5 @@
 const router = require('express').Router()
+const { isAuthenticated } = require('../middleware/auth')
 const { getAll, getById, create, update, remove } = require('../controllers/requests.controller')
 const { isAuthenticated } = require('../middleware/auth')
 
