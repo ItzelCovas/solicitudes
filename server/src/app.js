@@ -9,7 +9,7 @@ const usersRoutes = require('./routes/users.routes')
 const areasRoutes = require('./routes/areas.routes')
 const categoriesRoutes = require('./routes/categories.routes')
 const requestsRoutes = require('./routes/requests.routes')
-
+const { errorHandler } = require('./middleware/errorHandler') //Middleware para manejar errores
 const app = express()
 
 app.use(cors({
@@ -35,5 +35,7 @@ app.use('/api/users', usersRoutes)
 app.use('/api/areas', areasRoutes)
 app.use('/api/categories', categoriesRoutes)
 app.use('/api/requests', requestsRoutes)
+
+app.use(errorHandler)
 
 module.exports = app

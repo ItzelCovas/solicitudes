@@ -12,7 +12,7 @@ async function getAll(req, res) {
     `)
     res.json(result.rows)
   } catch (err) {
-    res.status(500).json({ error: 'Error interno del servidor' })
+    next(err);
   }
 }
 
@@ -29,14 +29,12 @@ async function getById(req, res) {
     if (!result.rows[0]) return res.status(404).json({ error: 'Solicitud no encontrada' })
     res.json(result.rows[0])
   } catch (err) {
-    res.status(500).json({ error: 'Error interno del servidor' })
+    next(err);
   }
 }
 
 async function create(req, res) {
   const { title, description, area_id, category_id } = req.body
-  //if (!title || !area_id) return res.status(400).json({ error: 'Título y área son requeridos' })
-
   const userId = req.session.userId
 
   try {
@@ -47,7 +45,7 @@ async function create(req, res) {
     )
     res.status(201).json(result.rows[0])
   } catch (err) {
-    res.status(500).json({ error: 'Error interno del servidor' })
+    next(err);
   }
 }
 
@@ -60,8 +58,8 @@ async function update(req, res) {
 
     const result = await pool.query(
       `UPDATE requests
-       SET title = $1, description = $2, status = $3, area_id = $4, category_id = $5, updated_at = NOW()
-       WHERE id = $6 RETURNING *`,
+      SET title = $1, description = $2, status = $3, area_id = $4, category_id = $5, updated_at = NOW()
+      WHERE id = $6 RETURNING *`,
       [
         title ?? current.rows[0].title,
         description ?? current.rows[0].description,
@@ -73,7 +71,7 @@ async function update(req, res) {
     )
     res.json(result.rows[0])
   } catch (err) {
-    res.status(500).json({ error: 'Error interno del servidor' })
+    next(err);
   }
 }
 
@@ -83,7 +81,7 @@ async function remove(req, res) {
     if (!result.rows[0]) return res.status(404).json({ error: 'Solicitud no encontrada' })
     res.json({ message: 'Solicitud eliminada' })
   } catch (err) {
-    res.status(500).json({ error: 'Error interno del servidor' })
+    next(err);
   }
 }
 
